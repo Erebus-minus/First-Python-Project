@@ -6,21 +6,28 @@ deck_count = 48
 player_hand = []
 bot_hand = []
 
-def get_card(amount, person):
+def get_card(amount, person, requested_card):
     global deck_count
     card = ""
+    asking_card = requested_card
     if person == "player":
         for i in range(amount):
             card = deck[random.randint(0,len(deck)-1)]
             player_hand.append(card)
-            deck_count -= 10
+            deck_count -= 1
             deck.remove(card)
+        if card == asking_card:
+            return True
+
     else:
         for i in range(amount):
             card = deck[random.randint(0,len(deck)-1)]
             bot_hand.append(card)
             deck_count -= 1
             deck.remove(card)
+        if card == asking_card:
+            return True
+        
 
 def ask_for_card(card, person):
     success = False
@@ -31,11 +38,13 @@ def ask_for_card(card, person):
                 bot_hand.remove(cards)
                 success = True
         if success == True:
-            print("You successfuly obtained {asked_card}".format(asked_card = card))
+            print("You successfuly obtained {asked_card} go again".format(asked_card = card))
+            return True
         else:
             print("Bot does not have {asked_card}".format(asked_card = card))
             print("Drawing a card for you")
-            get_card(1, "player")
+            return get_card(1, "player", card)
+
 
     else:
         for cards in player_hand:
@@ -45,10 +54,11 @@ def ask_for_card(card, person):
                 success = True
         if success == True:
             print("Bot successfuly obtained {asked_card}".format(asked_card = card))
+            return True
         else:
             print("Player does not have {asked_card}".format(asked_card = card))
             print("Drawing a card for bot")
-            get_card(1, "bot")
+            return get_card(1, "bot", card)
     success = False
        
 hand = []
@@ -62,7 +72,9 @@ def cards_in_hand():
 
 def pick_a_card():
     multiple = 0
-    max_number_and_value = [1, bot_hand[0]]
+    first_card = bot_hand[0]
+    max_number_and_value = [1, first_card[0]]
+    value = 0
     card = 0
     mini_list = 0
     for i in range(len(bot_hand)-1):
@@ -70,14 +82,15 @@ def pick_a_card():
             mini_list = bot_hand[i]
             if card[0] == mini_list[0]:
                 multiple += 1
+                value = mini_list[0]
+        print(max_number_and_value)
         if multiple > int(max_number_and_value[0]):
-            max_number_and_value = bot_hand[i]
+            max_number_and_value[0] = multiple
+            max_number_and_value[1] = mini_list[0]
             
         multiple = 0
     return max_number_and_value[1]
     
-                
-        
             
         
        
@@ -88,24 +101,43 @@ if random_number == 0:
 else:
     turn_player = "bot"
 
-get_card(7, "player")
-get_card(7, "bot")
+get_card(7, "player", "")
+get_card(7, "bot", "")
 print("Your hand: " + str(player_hand))
 print("Bots hand: " + str(bot_hand))
 
 print("This is the deck after drawing" + str(deck))
-if turn_player == "player":
-    hand = cards_in_hand()
-    print("The cards in you hand " + str(hand))
-    asking_card = input("What value of will will you ask for from the bot: ")
-    while asking_card.title() not in hand:
-        print("Sorry, that card is not in your hand")
-        asking_card = input("Pick another card: ")
-    ask_for_card(asking_card, "player")
-else:
-    asking_card = pick_a_card()
-    print("Bot is asking for {card}".format(card=asking_card))
-    ask_for_card(asking_card, "bot")
+print("Deck count is: " + str(deck_count))
+
+while deck_count > 0:
+    if turn_player == "player":
+        print("It is your turn")
+        hand = cards_in_hand()
+        print("The cards in you hand " + str(hand))
+        asking_card = input("What value of will you ask for from the bot: ")
+        while asking_card.title() not in hand:
+            print("Sorry, that card is not in your hand")
+            asking_card = input("Pick another card: ")
+        success = ask_for_card(asking_card, "player")
+        if success == True:
+            turn_player = "player"
+        else:
+            turn_player = "bot"
+    else:
+        print("It is bots turn")
+        asking_card = pick_a_card()
+        print("Bot is asking for {card}".format(card=asking_card))
+        success = ask_for_card(asking_card, "bot")
+        if success == True:
+            turn_player = "bot"
+        else:
+            turn_player = "player"
+    
+    if deck_count == 30:
+        print("Deck _ count is " + str(deck_count))
+        break
+
+
     
 
 
