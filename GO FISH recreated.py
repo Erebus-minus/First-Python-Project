@@ -6,6 +6,7 @@ deck_count = 48
 player_hand = []
 bot_hand = []
 
+
 def get_card(amount, person, requested_card):
     global deck_count
     card = ""
@@ -19,6 +20,7 @@ def get_card(amount, person, requested_card):
         if card == asking_card:
             return True
 
+
     else:
         for i in range(amount):
             card = deck[random.randint(0,len(deck)-1)]
@@ -27,7 +29,8 @@ def get_card(amount, person, requested_card):
             deck.remove(card)
         if card == asking_card:
             return True
-        
+       
+
 
 def ask_for_card(card, person):
     success = False
@@ -38,12 +41,14 @@ def ask_for_card(card, person):
                 bot_hand.remove(cards)
                 success = True
         if success == True:
-            print("You successfuly obtained {asked_card} go again".format(asked_card = card))
+            print("You successfully obtained {asked_card} go again".format(asked_card = card))
             return True
         else:
             print("Bot does not have {asked_card}".format(asked_card = card))
             print("Drawing a card for you")
             return get_card(1, "player", card)
+
+
 
 
     else:
@@ -53,7 +58,7 @@ def ask_for_card(card, person):
                 player_hand.remove(cards)
                 success = True
         if success == True:
-            print("Bot successfuly obtained {asked_card}".format(asked_card = card))
+            print("Bot successfully obtained {asked_card}".format(asked_card = card))
             return True
         else:
             print("Player does not have {asked_card}".format(asked_card = card))
@@ -68,7 +73,9 @@ def cards_in_hand():
     for card in player_hand:
         hand.append(card[0])
 
+
     return hand
+
 
 def pick_a_card():
     multiple = 0
@@ -77,6 +84,8 @@ def pick_a_card():
     value = 0
     card = 0
     mini_list = 0
+    previous_value = max_number_and_value[1]
+    print("Previous choice is: " + str(previous_value))
     for i in range(len(bot_hand)-1):
         for card in bot_hand:
             mini_list = bot_hand[i]
@@ -87,12 +96,17 @@ def pick_a_card():
         if multiple > int(max_number_and_value[0]):
             max_number_and_value[0] = multiple
             max_number_and_value[1] = mini_list[0]
-            
+          
         multiple = 0
+    if max_number_and_value[1] == previous_value:
+        value = bots_hand[random.randint[0,len(bots_hand-1)]]
+        max_number_and_value[1] = value[1]
+    previous_value = max_number_and_value[1]
     return max_number_and_value[1]
     
-            
-        
+   
+           
+       
        
 turn_player = ""
 random_number = random.randint(0,1)
@@ -101,13 +115,16 @@ if random_number == 0:
 else:
     turn_player = "bot"
 
+
 get_card(7, "player", "")
 get_card(7, "bot", "")
 print("Your hand: " + str(player_hand))
 print("Bots hand: " + str(bot_hand))
 
+
 print("This is the deck after drawing" + str(deck))
 print("Deck count is: " + str(deck_count))
+
 
 while deck_count > 0:
     if turn_player == "player":
@@ -132,15 +149,18 @@ while deck_count > 0:
             turn_player = "bot"
         else:
             turn_player = "player"
-    
-    if deck_count == 30:
+   
+    if deck_count == 20:
         print("Deck _ count is " + str(deck_count))
         break
 
 
-    
+
+
+   
+
+
 
 
 print("Your hand: " + str(player_hand))
 print("Bots hand: " + str(bot_hand))
-
