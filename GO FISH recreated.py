@@ -7,6 +7,8 @@ player_hand = []
 bot_hand = []
 player_book_count = 0
 bot_book_count = 0
+previous_value = ""
+previous_value_accepted = True
 
 
 def get_card(amount, person, requested_card):
@@ -35,6 +37,7 @@ def get_card(amount, person, requested_card):
 
 
 def ask_for_card(card, person):
+    global previous_value_accepted
     success = False
     if person == "player":
         for cards in bot_hand:
@@ -49,10 +52,6 @@ def ask_for_card(card, person):
             print("Bot does not have {asked_card}".format(asked_card = card))
             print("Drawing a card for you")
             return get_card(1, "player", card)
-
-
-
-
     else:
         for cards in player_hand:
             if card == cards[0]:
@@ -61,14 +60,13 @@ def ask_for_card(card, person):
                 success = True
         if success == True:
             print("Bot successfully obtained {asked_card}".format(asked_card = card))
-            return True
             previous_value_accepted = True
+            return True
         else:
             print("Player does not have {asked_card}".format(asked_card = card))
             print("Drawing a card for bot")
-            return get_card(1, "bot", card)
             previous_value_accepted = False
-    success = False
+            return get_card(1, "bot", card)       
        
 hand = []
 def cards_in_hand():
@@ -80,8 +78,6 @@ def cards_in_hand():
 
     return hand
 
-previous_value = ""
-previous_value_accepted = True
 def pick_a_card():
     multiple = 0
     first_card = bot_hand[0]
@@ -138,10 +134,9 @@ def check_book_and_set(person):
                     if card[0] == chosen_card:
                         bot_hand.remove(card)
                 bot_book_count += 1
-                print("Bot set a book")
+                print("Bot set a book, card type was {card_type}".format(card_type=chosen_card))
             card_count = 0
-    print("Player number of books: " + str(player_book_count))
-    print("Bot number of books: " + str(bot_book_count))
+    
        
 
            
@@ -174,6 +169,7 @@ while deck_count > 0:
         else:
             turn_player = "bot"
             check_book_and_set("player")
+        print("Player number of books: " + str(player_book_count))
 
     else:
         check_book_and_set("bot")
@@ -186,6 +182,8 @@ while deck_count > 0:
         else:
             turn_player = "player"
             check_book_and_set("bot")
+        print("Bot number of books: " + str(bot_book_count))
+
 
 if player_book_count > bot_book_count:
     print("Player wins \nPlayer book count: {count} \nBot book count: {count2}\nPlayers hand is {players_hand}\nBots hand is {bots_hand}".format(count = player_book_count, count2 = bot_book_count, players_hand=player_hand, bots_hand=bot_hand))
