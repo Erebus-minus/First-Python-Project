@@ -157,13 +157,6 @@ else:
 
 get_card(7, "player", "")
 get_card(7, "bot", "")
-print("Your hand: " + str(player_hand))
-print("Bots hand: " + str(bot_hand))
-
-
-print("This is the deck after drawing" + str(deck))
-print("Deck count is: " + str(deck_count))
-
 
 while deck_count > 0:
     if turn_player == "player":
@@ -200,17 +193,3 @@ elif player_book_count < bot_book_count:
     print("Bot Wins \nBot book count: {count} \nPlayer book count: {count2}\nPlayers hand is {players_hand}\nBots hand is {bots_hand}".format(count = bot_book_count, count2 = player_book_count, players_hand=player_hand, bots_hand=bot_hand))
 else:
     print("Both parties have tied \nPlayer book count: {count} \nBot book count: {count2}\nPlayers hand is {players_hand}\nBots hand is {bots_hand}".format(count = player_book_count, count2 = bot_book_count, players_hand=player_hand, bots_hand=bot_hand))
-
-
-
-
-
-
-
-   
-
-
-
-
-print("Your hand: " + str(player_hand))
-print("Bots hand: " + str(bot_hand))
